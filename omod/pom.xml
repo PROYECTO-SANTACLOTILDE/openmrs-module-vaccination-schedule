@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+		<groupId>org.openmrs.module</groupId>
+		<artifactId>fua</artifactId>
+		<version>1.0.19</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+  <artifactId>fua-omod</artifactId>
+  <packaging>jar</packaging>
+  <name>Fua OMOD</name>
+  <description>Omod submodule for Fua</description>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>fua-api</artifactId>
+      <version>1.0.19</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.web</groupId>
+      <artifactId>openmrs-web</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.web</groupId>
+      <artifactId>openmrs-web</artifactId>
+      <scope>provided</scope>
+      <classifier>tests</classifier>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.openmrs.maven.plugins</groupId>
+        <artifactId>maven-openmrs-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub FUA Module Packages</name>
+      <url>https://maven.pkg.github.com/PROYECTO-SANTACLOTILDE/openmrs-module-peruHCE</url>
+    </repository>
+  </distributionManagement>
+</project>
