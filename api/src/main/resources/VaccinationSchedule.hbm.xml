@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.vaccinationschedule">
+
+    <class name="VaccinationSchedule" table="vaccination_schedule">
+        <id name="scheduleId" column="schedule_id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="uuid" column="uuid" length="38" not-null="true" unique="true"/>
+        <property name="name" column="name" length="255" not-null="true"/>
+        <property name="description" column="description" length="1000"/>
+        <property name="countryCode" column="country_code" length="3"/>
+        <property name="version" column="version" not-null="true"/>
+        <property name="effectiveDate" column="effective_date" type="date" not-null="true"/>
+        <property name="expiryDate" column="expiry_date" type="date"/>
+        <property name="sourceAuthority" column="source_authority" length="255"/>
+        <property name="retired" column="retired" type="boolean" not-null="true"/>
+        
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by"/>
+        <property name="dateRetired" column="date_retired" type="timestamp"/>
+        <property name="retireReason" column="retire_reason" length="255"/>
+        
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" column="date_created" type="timestamp" not-null="true"/>
+        <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
+        <property name="dateChanged" column="date_changed" type="timestamp"/>
+        
+        <set name="entries" cascade="all-delete-orphan" inverse="true" lazy="false">
+            <key column="schedule_id"/>
+            <one-to-many class="VaccinationScheduleEntry"/>
+        </set>
+        
+        <set name="rules" cascade="all-delete-orphan" inverse="true" lazy="false">
+            <key column="schedule_id"/>
+            <one-to-many class="VaccinationScheduleRule"/>
+        </set>
+    </class>
+
+</hibernate-mapping>

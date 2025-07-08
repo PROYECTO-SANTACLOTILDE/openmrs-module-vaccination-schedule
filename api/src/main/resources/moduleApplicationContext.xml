@@ -60,7 +60,18 @@
     <bean id="vaccinationschedule.VaccinationScheduleDao" 
           class="org.openmrs.module.vaccinationschedule.api.dao.impl.VaccinationScheduleDaoImpl">
         <property name="sessionFactory">
-            <ref bean="sessionFactory" />
+            <ref bean="dbSessionFactory" />
+        </property>
+    </bean>
+    
+    <!-- Hibernate Mappings -->
+    <bean id="vaccinationScheduleHibernateMappingPackage" class="org.openmrs.util.HibernateMappingPackage">
+        <property name="packageName" value="org.openmrs.module.vaccinationschedule"/>
+        <property name="mappingFiles">
+            <set>
+                <value>VaccinationSchedule.hbm.xml</value>
+                <value>VaccinationScheduleEntry.hbm.xml</value>
+            </set>
         </property>
     </bean>
 

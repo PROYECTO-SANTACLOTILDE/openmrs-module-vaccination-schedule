@@ -1,6 +1,7 @@
 package org.openmrs.module.vaccinationschedule.api.dao;
 
 import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
+import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,15 @@ public interface VaccinationScheduleDao {
     VaccinationSchedule saveVaccinationSchedule(VaccinationSchedule schedule);
     
     void deleteVaccinationSchedule(VaccinationSchedule schedule);
+    
+    // Schedule Entry methods
+    VaccinationScheduleEntry getScheduleEntry(Integer entryId);
+    
+    VaccinationScheduleEntry getScheduleEntryByUuid(String uuid);
+    
+    VaccinationScheduleEntry saveScheduleEntry(VaccinationScheduleEntry entry);
+    
+    void deleteScheduleEntry(VaccinationScheduleEntry entry);
+    
+    List<VaccinationScheduleEntry> getEntriesBySchedule(VaccinationSchedule schedule);
 }

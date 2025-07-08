@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.vaccinationschedule">
+
+    <class name="VaccinationScheduleEntry" table="vaccination_schedule_entry">
+        <id name="entryId" column="entry_id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="uuid" column="uuid" length="38" not-null="true" unique="true"/>
+        
+        <many-to-one name="vaccinationSchedule" class="VaccinationSchedule" column="schedule_id" not-null="true"/>
+        <many-to-one name="vaccineConcept" class="org.openmrs.Concept" column="vaccine_concept_id" not-null="true"/>
+        
+        <property name="doseNumber" column="dose_number" type="integer" not-null="true"/>
+        <property name="ageInDaysMin" column="age_in_days_min" type="integer" not-null="true"/>
+        <property name="ageInDaysRecommended" column="age_in_days_recommended" type="integer" not-null="true"/>
+        <property name="ageInDaysMax" column="age_in_days_max" type="integer"/>
+        <property name="intervalFromPreviousDays" column="interval_from_previous_days" type="integer"/>
+        <property name="isMandatory" column="is_mandatory" type="boolean" not-null="true"/>
+        <property name="sortOrder" column="sort_order" type="integer" not-null="true"/>
+        
+        <many-to-one name="routeConcept" class="org.openmrs.Concept" column="route_concept_id"/>
+        <many-to-one name="siteConcept" class="org.openmrs.Concept" column="site_concept_id"/>
+        
+        <property name="voided" column="voided" type="boolean" not-null="true"/>
+        <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>
+        <property name="dateVoided" column="date_voided" type="timestamp"/>
+        <property name="voidReason" column="void_reason" length="255"/>
+        
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" column="date_created" type="timestamp" not-null="true"/>
+        <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
+        <property name="dateChanged" column="date_changed" type="timestamp"/>
+    </class>
+
+</hibernate-mapping>

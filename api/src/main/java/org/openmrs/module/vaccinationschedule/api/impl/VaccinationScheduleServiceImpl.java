@@ -114,17 +114,17 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
             throw new APIException("Recommended age cannot be greater than maximum age");
         }
         
-        return null;
+        return vaccinationScheduleDao.saveScheduleEntry(entry);
     }
     
     @Override
     public VaccinationScheduleEntry getScheduleEntry(Integer entryId) {
-        return null;
+        return vaccinationScheduleDao.getScheduleEntry(entryId);
     }
     
     @Override
     public VaccinationScheduleEntry getScheduleEntryByUuid(String uuid) {
-        return null;
+        return vaccinationScheduleDao.getScheduleEntryByUuid(uuid);
     }
     
     @Override
