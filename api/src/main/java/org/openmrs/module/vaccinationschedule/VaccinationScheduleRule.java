@@ -4,12 +4,8 @@ import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
-@Table(name = "vaccination_schedule_rule")
 public class VaccinationScheduleRule extends BaseOpenmrsData {
     
     public enum RuleType {
@@ -19,33 +15,18 @@ public class VaccinationScheduleRule extends BaseOpenmrsData {
         ALTERNATIVE
     }
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rule_id")
     private Integer ruleId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false)
-    @NotNull
     private VaccinationSchedule vaccinationSchedule;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rule_type", nullable = false, length = 50)
-    @NotNull
     private RuleType ruleType;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vaccine_concept_id")
     private Concept vaccineConcept;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "condition_concept_id")
     private Concept conditionConcept;
     
-    @Column(name = "rule_expression", length = 1000)
     private String ruleExpression;
     
-    @Column(name = "description", length = 1000)
     private String description;
     
     public VaccinationScheduleRule() {

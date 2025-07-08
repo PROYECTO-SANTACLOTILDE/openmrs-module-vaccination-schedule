@@ -4,13 +4,9 @@ import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "patient_vaccination_schedule")
 public class PatientVaccinationSchedule extends BaseOpenmrsData {
     
     public enum Status {
@@ -20,37 +16,18 @@ public class PatientVaccinationSchedule extends BaseOpenmrsData {
         TRANSFERRED
     }
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
-    @NotNull
     private Patient patient;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false)
-    @NotNull
     private VaccinationSchedule vaccinationSchedule;
     
-    @Column(name = "assigned_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date assignedDate;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_by_user_id", nullable = false)
-    @NotNull
     private User assignedByUser;
     
-    @Column(name = "birth_date_at_assignment")
-    @Temporal(TemporalType.DATE)
     private Date birthDateAtAssignment;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
-    @NotNull
     private Status status = Status.ACTIVE;
     
     public PatientVaccinationSchedule() {

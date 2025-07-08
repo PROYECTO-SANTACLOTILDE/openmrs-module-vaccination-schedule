@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.vaccinationschedule">
+
+    <class name="PatientVaccinationSchedule" table="patient_vaccination_schedule">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="uuid" column="uuid" length="38" not-null="true" unique="true"/>
+        
+        <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" not-null="true"/>
+        <many-to-one name="vaccinationSchedule" class="VaccinationSchedule" column="schedule_id" not-null="true"/>
+        
+        <property name="assignedDate" column="assigned_date" type="timestamp" not-null="true"/>
+        <many-to-one name="assignedByUser" class="org.openmrs.User" column="assigned_by_user_id" not-null="true"/>
+        <property name="birthDateAtAssignment" column="birth_date_at_assignment" type="date"/>
+        
+        <property name="status" column="status" type="string" length="20" not-null="true"/>
+        
+        <property name="voided" column="voided" type="boolean" not-null="true"/>
+        <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>
+        <property name="dateVoided" column="date_voided" type="timestamp"/>
+        <property name="voidReason" column="void_reason" length="255"/>
+        
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" column="date_created" type="timestamp" not-null="true"/>
+        <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
+        <property name="dateChanged" column="date_changed" type="timestamp"/>
+    </class>
+
+</hibernate-mapping>
