@@ -3,58 +3,32 @@ package org.openmrs.module.vaccinationschedule;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Entity
-@Table(name = "vaccination_schedule_entry")
 public class VaccinationScheduleEntry extends BaseOpenmrsData {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "entry_id")
     private Integer entryId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false)
-    @NotNull
     private VaccinationSchedule vaccinationSchedule;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vaccine_concept_id", nullable = false)
-    @NotNull
     private Concept vaccineConcept;
     
-    @Column(name = "dose_number", nullable = false)
-    @Positive
     private Integer doseNumber;
     
-    @Column(name = "age_in_days_min", nullable = false)
     private Integer ageInDaysMin;
     
-    @Column(name = "age_in_days_recommended", nullable = false)
     private Integer ageInDaysRecommended;
     
-    @Column(name = "age_in_days_max")
     private Integer ageInDaysMax;
     
-    @Column(name = "interval_from_previous_days")
     private Integer intervalFromPreviousDays;
     
-    @Column(name = "is_mandatory", nullable = false)
     private Boolean isMandatory = true;
     
-    @Column(name = "sort_order", nullable = false)
     private Integer sortOrder = 0;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_concept_id")
     private Concept routeConcept;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "site_concept_id")
     private Concept siteConcept;
     
     public VaccinationScheduleEntry() {

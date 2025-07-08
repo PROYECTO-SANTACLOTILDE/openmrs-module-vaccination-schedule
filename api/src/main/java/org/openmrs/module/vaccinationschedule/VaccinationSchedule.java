@@ -3,49 +3,31 @@ package org.openmrs.module.vaccinationschedule;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.User;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-@Entity
-@Table(name = "vaccination_schedule", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"country_code", "version", "retired"}))
 public class VaccinationSchedule extends BaseOpenmrsMetadata {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
     private Integer scheduleId;
     
-    @Column(name = "name", nullable = false, length = 255)
     private String name;
     
-    @Column(name = "description", length = 1000)
     private String description;
     
-    @Column(name = "country_code", length = 3)
     private String countryCode;
     
-    @Column(name = "version", nullable = false)
     private Integer version = 1;
     
-    @Column(name = "effective_date", nullable = false)
-    @Temporal(TemporalType.DATE)
     private Date effectiveDate;
     
-    @Column(name = "expiry_date")
-    @Temporal(TemporalType.DATE)
     private Date expiryDate;
     
-    @Column(name = "source_authority", length = 255)
     private String sourceAuthority;
     
-    @OneToMany(mappedBy = "vaccinationSchedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OrderBy("sortOrder ASC")
-    private List<VaccinationScheduleEntry> entries;
+    private Set<VaccinationScheduleEntry> entries;
     
-    @OneToMany(mappedBy = "vaccinationSchedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<VaccinationScheduleRule> rules;
+    private Set<VaccinationScheduleRule> rules;
     
     public VaccinationSchedule() {
         super();
@@ -132,19 +114,19 @@ public class VaccinationSchedule extends BaseOpenmrsMetadata {
         this.sourceAuthority = sourceAuthority;
     }
     
-    public List<VaccinationScheduleEntry> getEntries() {
+    public Set<VaccinationScheduleEntry> getEntries() {
         return entries;
     }
     
-    public void setEntries(List<VaccinationScheduleEntry> entries) {
+    public void setEntries(Set<VaccinationScheduleEntry> entries) {
         this.entries = entries;
     }
     
-    public List<VaccinationScheduleRule> getRules() {
+    public Set<VaccinationScheduleRule> getRules() {
         return rules;
     }
     
-    public void setRules(List<VaccinationScheduleRule> rules) {
+    public void setRules(Set<VaccinationScheduleRule> rules) {
         this.rules = rules;
     }
     
@@ -163,12 +145,18 @@ public class VaccinationSchedule extends BaseOpenmrsMetadata {
     }
     
     public List<VaccinationScheduleEntry> getEntriesByAge(int ageInDays) {
+        if (entries == null) {
+            return new java.util.ArrayList<>();
+        }
         return entries.stream()
                 .filter(entry -> !entry.getVoided() && entry.isValidForAge(ageInDays))
                 .collect(java.util.stream.Collectors.toList());
     }
     
     public List<VaccinationScheduleEntry> getActiveEntries() {
+        if (entries == null) {
+            return new java.util.ArrayList<>();
+        }
         return entries.stream()
                 .filter(entry -> !entry.getVoided())
                 .collect(java.util.stream.Collectors.toList());

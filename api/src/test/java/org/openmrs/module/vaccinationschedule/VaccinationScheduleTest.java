@@ -7,7 +7,9 @@ import org.openmrs.ConceptName;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,7 +50,7 @@ public class VaccinationScheduleTest {
         entry2.setAgeInDaysMax(120);
         entry2.setVoided(false);
         
-        List<VaccinationScheduleEntry> entries = new ArrayList<>();
+        Set<VaccinationScheduleEntry> entries = new HashSet<>();
         entries.add(entry1);
         entries.add(entry2);
         schedule.setEntries(entries);
