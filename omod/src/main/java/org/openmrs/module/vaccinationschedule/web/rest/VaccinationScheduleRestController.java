@@ -2,7 +2,6 @@ package org.openmrs.module.vaccinationschedule.web.rest;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
-import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -12,47 +11,48 @@ import org.openmrs.module.webservices.rest.web.representation.FullRepresentation
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
-import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Resource(name = RestConstants.VERSION_1 + "/vaccinationschedule/schedule", 
-          supportedClass = VaccinationSchedule.class, supportedOpenmrsVersions = {"2.6.*"})
-public class VaccinationScheduleRestController extends DataDelegatingCrudResource<VaccinationSchedule> {
-    
+@Resource(name = RestConstants.VERSION_1
+        + "/vaccinationschedule/schedule", supportedClass = VaccinationSchedule.class, supportedOpenmrsVersions = {
+                "2.6.*" })
+public class VaccinationScheduleRestController extends DelegatingCrudResource<VaccinationSchedule> {
+
     @Override
     public VaccinationSchedule getByUniqueId(String uniqueId) {
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         return service.getVaccinationScheduleByUuid(uniqueId);
     }
-    
+
     @Override
-    protected void delete(VaccinationSchedule delegate, String reason, RequestContext context) throws ResponseException {
+    protected void delete(VaccinationSchedule delegate, String reason, RequestContext context)
+            throws ResponseException {
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         service.retireVaccinationSchedule(delegate, reason);
     }
-    
+
     @Override
     public VaccinationSchedule newDelegate() {
         return new VaccinationSchedule();
     }
-    
+
     @Override
     public VaccinationSchedule save(VaccinationSchedule delegate) {
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         return service.saveVaccinationSchedule(delegate);
     }
-    
+
     @Override
-    protected void purge(VaccinationSchedule delegate, RequestContext context) throws ResponseException {
+    public void purge(VaccinationSchedule delegate, RequestContext context) throws ResponseException {
         throw new ResourceDoesNotSupportOperationException("Purge not supported for vaccination schedules");
     }
-    
+
     @Override
     public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
         if (rep instanceof RefRepresentation) {
@@ -99,7 +99,7 @@ public class VaccinationScheduleRestController extends DataDelegatingCrudResourc
         }
         return null;
     }
-    
+
     @Override
     public DelegatingResourceDescription getCreatableProperties() {
         DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -112,12 +112,12 @@ public class VaccinationScheduleRestController extends DataDelegatingCrudResourc
         description.addProperty("sourceAuthority");
         return description;
     }
-    
+
     @Override
     public DelegatingResourceDescription getUpdatableProperties() {
         return getCreatableProperties();
     }
-    
+
     @Override
     protected PageableResult doGetAll(RequestContext context) throws ResponseException {
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
@@ -125,7 +125,7 @@ public class VaccinationScheduleRestController extends DataDelegatingCrudResourc
         List<VaccinationSchedule> schedules = service.getAllSchedules(includeRetired);
         return new NeedsPaging<VaccinationSchedule>(schedules, context);
     }
-    
+
     @Override
     protected PageableResult doSearch(RequestContext context) {
         String countryCode = context.getRequest().getParameter("country");
@@ -136,12 +136,12 @@ public class VaccinationScheduleRestController extends DataDelegatingCrudResourc
         }
         return super.doSearch(context);
     }
-    
+
     @Override
     public String getResourceVersion() {
         return RestConstants.VERSION_1;
     }
-    
+
     public String getDisplayString(VaccinationSchedule schedule) {
         if (schedule.getName() == null) {
             return "";

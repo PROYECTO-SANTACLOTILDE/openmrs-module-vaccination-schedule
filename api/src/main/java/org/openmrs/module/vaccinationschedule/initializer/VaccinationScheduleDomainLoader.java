@@ -34,12 +34,10 @@ public class VaccinationScheduleDomainLoader extends BaseLineProcessor<Vaccinati
     
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    @Override
     public Domain getDomain() {
         return Domain.valueOf(DOMAIN_NAME.toUpperCase());
     }
     
-    @Override
     public VaccinationSchedule bootstrap(CsvLine line) throws IllegalArgumentException {
         String uuid = line.get(HEADER_UUID);
         
@@ -98,7 +96,6 @@ public class VaccinationScheduleDomainLoader extends BaseLineProcessor<Vaccinati
         return schedule;
     }
     
-    @Override
     protected VaccinationSchedule save(VaccinationSchedule schedule) {
         return vaccinationScheduleService.saveVaccinationSchedule(schedule);
     }

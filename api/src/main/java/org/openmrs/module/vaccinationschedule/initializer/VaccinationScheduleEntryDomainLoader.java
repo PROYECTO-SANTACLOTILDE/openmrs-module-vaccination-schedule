@@ -37,12 +37,10 @@ public class VaccinationScheduleEntryDomainLoader extends BaseLineProcessor<Vacc
     @Autowired
     private ConceptService conceptService;
     
-    @Override
     public Domain getDomain() {
         return Domain.valueOf(DOMAIN_NAME.toUpperCase());
     }
     
-    @Override
     public VaccinationScheduleEntry bootstrap(CsvLine line) throws IllegalArgumentException {
         String uuid = line.get(HEADER_UUID);
         
@@ -155,7 +153,6 @@ public class VaccinationScheduleEntryDomainLoader extends BaseLineProcessor<Vacc
         return entry;
     }
     
-    @Override
     protected VaccinationScheduleEntry save(VaccinationScheduleEntry entry) {
         return vaccinationScheduleService.saveScheduleEntry(entry);
     }
