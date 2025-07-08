@@ -179,32 +179,61 @@ public class VaccinationScheduleEntry extends BaseOpenmrsData {
     }
     
     public boolean isValidForAge(int ageInDays) {
+        if (ageInDays < 0) {
+            return false;
+        }
+        
+        if (ageInDaysMin == null) {
+            return false;
+        }
+        
         if (ageInDays < ageInDaysMin) {
             return false;
         }
+        
         if (ageInDaysMax != null && ageInDays > ageInDaysMax) {
             return false;
         }
+        
         return true;
     }
     
     public VaccinationScheduleEntry getNextDose() {
+        if (vaccinationSchedule == null || vaccineConcept == null || doseNumber == null) {
+            return null;
+        }
+        
         List<VaccinationScheduleEntry> entries = vaccinationSchedule.getActiveEntries();
+        if (entries == null || entries.isEmpty()) {
+            return null;
+        }
+        
         return entries.stream()
-                .filter(entry -> entry.getVaccineConcept().equals(this.vaccineConcept))
-                .filter(entry -> entry.getDoseNumber() == this.doseNumber + 1)
+                .filter(entry -> entry != null && 
+                        entry.getVaccineConcept() != null && 
+                        entry.getVaccineConcept().equals(this.vaccineConcept))
+                .filter(entry -> entry.getDoseNumber() != null && 
+                        entry.getDoseNumber() == this.doseNumber + 1)
                 .findFirst()
                 .orElse(null);
     }
     
     public VaccinationScheduleEntry getPreviousDose() {
-        if (doseNumber <= 1) {
+        if (vaccinationSchedule == null || vaccineConcept == null || doseNumber == null || doseNumber <= 1) {
             return null;
         }
+        
         List<VaccinationScheduleEntry> entries = vaccinationSchedule.getActiveEntries();
+        if (entries == null || entries.isEmpty()) {
+            return null;
+        }
+        
         return entries.stream()
-                .filter(entry -> entry.getVaccineConcept().equals(this.vaccineConcept))
-                .filter(entry -> entry.getDoseNumber() == this.doseNumber - 1)
+                .filter(entry -> entry != null && 
+                        entry.getVaccineConcept() != null && 
+                        entry.getVaccineConcept().equals(this.vaccineConcept))
+                .filter(entry -> entry.getDoseNumber() != null && 
+                        entry.getDoseNumber() == this.doseNumber - 1)
                 .findFirst()
                 .orElse(null);
     }

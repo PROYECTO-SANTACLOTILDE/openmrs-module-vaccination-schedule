@@ -36,6 +36,13 @@ public class VaccinationScheduleRule extends BaseOpenmrsData {
     public VaccinationScheduleRule(VaccinationSchedule schedule, RuleType ruleType, 
                                   Concept vaccineConcept, String description) {
         this();
+        if (schedule == null) {
+            throw new IllegalArgumentException("VaccinationSchedule cannot be null");
+        }
+        if (ruleType == null) {
+            throw new IllegalArgumentException("RuleType cannot be null");
+        }
+        
         this.vaccinationSchedule = schedule;
         this.ruleType = ruleType;
         this.vaccineConcept = vaccineConcept;
@@ -166,10 +173,20 @@ public class VaccinationScheduleRule extends BaseOpenmrsData {
     }
     
     public boolean isApplicable(VaccinationScheduleEntry entry) {
+        if (entry == null) {
+            return false;
+        }
+        
         if (vaccineConcept == null) {
             return true;
         }
-        return vaccineConcept.equals(entry.getVaccineConcept());
+        
+        Concept entryConcept = entry.getVaccineConcept();
+        if (entryConcept == null) {
+            return false;
+        }
+        
+        return vaccineConcept.equals(entryConcept);
     }
     
     @Override
@@ -177,8 +194,8 @@ public class VaccinationScheduleRule extends BaseOpenmrsData {
         return "VaccinationScheduleRule{" +
                 "ruleId=" + ruleId +
                 ", ruleType=" + ruleType +
-                ", vaccineConcept=" + (vaccineConcept != null ? vaccineConcept.getName() : "null") +
-                ", conditionConcept=" + (conditionConcept != null ? conditionConcept.getName() : "null") +
+                ", vaccineConcept=" + (vaccineConcept != null && vaccineConcept.getName() != null ? vaccineConcept.getName().getName() : "null") +
+                ", conditionConcept=" + (conditionConcept != null && conditionConcept.getName() != null ? conditionConcept.getName().getName() : "null") +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -19,7 +19,12 @@
         <many-to-one name="assignedByUser" class="org.openmrs.User" column="assigned_by_user_id" not-null="true"/>
         <property name="birthDateAtAssignment" column="birth_date_at_assignment" type="date"/>
         
-        <property name="status" column="status" type="string" length="20" not-null="true"/>
+        <property name="status" column="status" not-null="true">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.openmrs.module.vaccinationschedule.PatientVaccinationSchedule$Status</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
         
         <property name="voided" column="voided" type="boolean" not-null="true"/>
         <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>

@@ -167,79 +167,156 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
     
     @Override
     public VaccinationScheduleRule saveScheduleRule(VaccinationScheduleRule rule) {
-        return null;
+        if (rule == null) {
+            throw new APIException("VaccinationScheduleRule cannot be null");
+        }
+        
+        if (rule.getVaccinationSchedule() == null) {
+            throw new APIException("VaccinationSchedule is required for rule");
+        }
+        
+        if (rule.getRuleType() == null) {
+            throw new APIException("Rule type is required");
+        }
+        
+        return vaccinationScheduleDao.saveScheduleRule(rule);
     }
     
     @Override
     public VaccinationScheduleRule getScheduleRule(Integer ruleId) {
-        return null;
+        if (ruleId == null) {
+            return null;
+        }
+        return vaccinationScheduleDao.getScheduleRule(ruleId);
     }
     
     @Override
     public VaccinationScheduleRule getScheduleRuleByUuid(String uuid) {
-        return null;
+        if (uuid == null || uuid.trim().isEmpty()) {
+            return null;
+        }
+        return vaccinationScheduleDao.getScheduleRuleByUuid(uuid);
     }
     
     @Override
     public List<VaccinationScheduleRule> getRulesBySchedule(VaccinationSchedule schedule) {
-        return new ArrayList<>();
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
+        return vaccinationScheduleDao.getRulesBySchedule(schedule);
     }
     
     @Override
     public VaccinationScheduleRule voidScheduleRule(VaccinationScheduleRule rule, String reason) {
-        return null;
+        if (rule == null) {
+            throw new APIException("VaccinationScheduleRule cannot be null");
+        }
+        
+        rule.setVoided(true);
+        rule.setVoidReason(reason);
+        rule.setVoidedBy(Context.getAuthenticatedUser());
+        rule.setDateVoided(new Date());
+        
+        return vaccinationScheduleDao.saveScheduleRule(rule);
     }
     
     @Override
     public VaccinationScheduleRule unvoidScheduleRule(VaccinationScheduleRule rule) {
-        return null;
+        if (rule == null) {
+            throw new APIException("VaccinationScheduleRule cannot be null");
+        }
+        
+        rule.setVoided(false);
+        rule.setVoidReason(null);
+        rule.setVoidedBy(null);
+        rule.setDateVoided(null);
+        
+        return vaccinationScheduleDao.saveScheduleRule(rule);
     }
     
     @Override
     public PatientVaccinationSchedule assignScheduleToPatient(Patient patient, VaccinationSchedule schedule) {
+        if (patient == null) {
+            throw new APIException("Patient cannot be null");
+        }
+        
+        if (schedule == null) {
+            throw new APIException("VaccinationSchedule cannot be null");
+        }
+        
         PatientVaccinationSchedule patientSchedule = new PatientVaccinationSchedule(
                 patient, schedule, Context.getAuthenticatedUser());
-        return patientSchedule;
+        
+        return vaccinationScheduleDao.savePatientSchedule(patientSchedule);
     }
     
     @Override
     public PatientVaccinationSchedule getPatientSchedule(Patient patient) {
-        return null;
+        if (patient == null) {
+            return null;
+        }
+        
+        List<PatientVaccinationSchedule> schedules = vaccinationScheduleDao.getPatientSchedulesByPatient(patient);
+        return schedules.isEmpty() ? null : schedules.get(0);
     }
     
     @Override
     public PatientVaccinationSchedule getPatientScheduleByUuid(String uuid) {
-        return null;
+        if (uuid == null || uuid.trim().isEmpty()) {
+            return null;
+        }
+        return vaccinationScheduleDao.getPatientScheduleByUuid(uuid);
     }
     
     @Override
     public List<PatientVaccinationSchedule> getPatientSchedulesBySchedule(VaccinationSchedule schedule) {
-        return new ArrayList<>();
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
+        return vaccinationScheduleDao.getPatientSchedulesBySchedule(schedule);
     }
     
     @Override
     public PatientVaccinationSchedule updatePatientScheduleStatus(PatientVaccinationSchedule patientSchedule, 
                                                                 PatientVaccinationSchedule.Status status) {
+        if (patientSchedule == null) {
+            throw new APIException("PatientVaccinationSchedule cannot be null");
+        }
+        
+        if (status == null) {
+            throw new APIException("Status cannot be null");
+        }
+        
         patientSchedule.setStatus(status);
-        return patientSchedule;
+        return vaccinationScheduleDao.savePatientSchedule(patientSchedule);
     }
     
     @Override
     public PatientVaccinationSchedule voidPatientSchedule(PatientVaccinationSchedule patientSchedule, String reason) {
+        if (patientSchedule == null) {
+            throw new APIException("PatientVaccinationSchedule cannot be null");
+        }
+        
         patientSchedule.setVoided(true);
         patientSchedule.setVoidReason(reason);
         patientSchedule.setVoidedBy(Context.getAuthenticatedUser());
         patientSchedule.setDateVoided(new Date());
-        return patientSchedule;
+        
+        return vaccinationScheduleDao.savePatientSchedule(patientSchedule);
     }
     
     @Override
     public PatientVaccinationSchedule unvoidPatientSchedule(PatientVaccinationSchedule patientSchedule) {
+        if (patientSchedule == null) {
+            throw new APIException("PatientVaccinationSchedule cannot be null");
+        }
+        
         patientSchedule.setVoided(false);
         patientSchedule.setVoidReason(null);
         patientSchedule.setVoidedBy(null);
         patientSchedule.setDateVoided(null);
-        return patientSchedule;
+        
+        return vaccinationScheduleDao.savePatientSchedule(patientSchedule);
     }
     
     @Override
@@ -302,7 +379,30 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
     @Override
     public void recordVaccineAdministration(Patient patient, VaccinationScheduleEntry entry, 
                                           Encounter encounter, Obs immunizationObs) {
+        if (patient == null) {
+            throw new APIException("Patient cannot be null");
+        }
         
+        if (entry == null) {
+            throw new APIException("VaccinationScheduleEntry cannot be null");
+        }
+        
+        if (encounter == null) {
+            throw new APIException("Encounter cannot be null");
+        }
+        
+        if (immunizationObs == null) {
+            throw new APIException("Immunization observation cannot be null");
+        }
+        
+        // Set up the observation for the vaccine administration
+        immunizationObs.setPerson(patient);
+        immunizationObs.setEncounter(encounter);
+        immunizationObs.setConcept(entry.getVaccineConcept());
+        immunizationObs.setObsDatetime(encounter.getEncounterDatetime());
+        
+        // Save the observation
+        Context.getObsService().saveObs(immunizationObs, null);
     }
     
     @Override
@@ -313,17 +413,44 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
     
     @Override
     public List<Obs> getAdministeredVaccines(Patient patient) {
-        return new ArrayList<>();
+        if (patient == null) {
+            return new ArrayList<>();
+        }
+        
+        // Get all immunization observations for the patient
+        List<Obs> immunizationObs = Context.getObsService().getObservationsByPerson(patient);
+        
+        // Filter for vaccine-related observations
+        return immunizationObs.stream()
+                .filter(obs -> obs.getConcept() != null && isVaccineConcept(obs.getConcept()))
+                .collect(Collectors.toList());
     }
     
     @Override
     public List<Obs> getAdministeredVaccinesForConcept(Patient patient, Concept vaccineConcept) {
-        return new ArrayList<>();
+        if (patient == null || vaccineConcept == null) {
+            return new ArrayList<>();
+        }
+        
+        // Get observations for the specific vaccine concept
+        List<Obs> vaccineObs = Context.getObsService().getObservationsByPersonAndConcept(patient, vaccineConcept);
+        
+        return vaccineObs.stream()
+                .filter(obs -> !obs.getVoided())
+                .collect(Collectors.toList());
     }
     
     @Override
     public List<VaccinationScheduleRule> evaluateRulesForPatient(Patient patient, VaccinationScheduleEntry entry) {
-        return new ArrayList<>();
+        if (patient == null || entry == null) {
+            return new ArrayList<>();
+        }
+        
+        List<VaccinationScheduleRule> rules = getRulesBySchedule(entry.getVaccinationSchedule());
+        
+        return rules.stream()
+                .filter(rule -> rule.isApplicable(entry))
+                .collect(Collectors.toList());
     }
     
     @Override
@@ -377,5 +504,27 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
                 .limit(maxResults)
                 .map(PatientVaccinationStatus::getScheduleEntry)
                 .collect(Collectors.toList());
+    }
+    
+    private boolean isVaccineConcept(Concept concept) {
+        // Check if the concept is a vaccine by looking at its concept class
+        // This is a simplified implementation - in a real system, you'd have
+        // a more sophisticated way to identify vaccine concepts
+        if (concept.getConceptClass() != null) {
+            String conceptClassName = concept.getConceptClass().getName();
+            return conceptClassName != null && 
+                   (conceptClassName.toLowerCase().contains("vaccine") || 
+                    conceptClassName.toLowerCase().contains("immunization"));
+        }
+        
+        // Alternative: check if concept name contains vaccine-related keywords
+        if (concept.getName() != null) {
+            String conceptName = concept.getName().getName().toLowerCase();
+            return conceptName.contains("vaccine") || 
+                   conceptName.contains("immunization") || 
+                   conceptName.contains("vaccination");
+        }
+        
+        return false;
     }
 }

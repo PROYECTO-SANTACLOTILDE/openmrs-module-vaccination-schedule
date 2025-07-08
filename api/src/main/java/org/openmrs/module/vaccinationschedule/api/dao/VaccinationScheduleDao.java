@@ -1,7 +1,10 @@
 package org.openmrs.module.vaccinationschedule.api.dao;
 
+import org.openmrs.Patient;
+import org.openmrs.module.vaccinationschedule.PatientVaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
+import org.openmrs.module.vaccinationschedule.VaccinationScheduleRule;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +36,28 @@ public interface VaccinationScheduleDao {
     void deleteScheduleEntry(VaccinationScheduleEntry entry);
     
     List<VaccinationScheduleEntry> getEntriesBySchedule(VaccinationSchedule schedule);
+    
+    // Schedule Rule methods
+    VaccinationScheduleRule getScheduleRule(Integer ruleId);
+    
+    VaccinationScheduleRule getScheduleRuleByUuid(String uuid);
+    
+    VaccinationScheduleRule saveScheduleRule(VaccinationScheduleRule rule);
+    
+    void deleteScheduleRule(VaccinationScheduleRule rule);
+    
+    List<VaccinationScheduleRule> getRulesBySchedule(VaccinationSchedule schedule);
+    
+    // Patient Schedule methods
+    PatientVaccinationSchedule getPatientSchedule(Integer id);
+    
+    PatientVaccinationSchedule getPatientScheduleByUuid(String uuid);
+    
+    PatientVaccinationSchedule savePatientSchedule(PatientVaccinationSchedule patientSchedule);
+    
+    void deletePatientSchedule(PatientVaccinationSchedule patientSchedule);
+    
+    List<PatientVaccinationSchedule> getPatientSchedulesByPatient(Patient patient);
+    
+    List<PatientVaccinationSchedule> getPatientSchedulesBySchedule(VaccinationSchedule schedule);
 }

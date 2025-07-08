@@ -37,6 +37,16 @@ public class PatientVaccinationSchedule extends BaseOpenmrsData {
     public PatientVaccinationSchedule(Patient patient, VaccinationSchedule schedule, 
                                     User assignedByUser) {
         this();
+        if (patient == null) {
+            throw new IllegalArgumentException("Patient cannot be null");
+        }
+        if (schedule == null) {
+            throw new IllegalArgumentException("VaccinationSchedule cannot be null");
+        }
+        if (assignedByUser == null) {
+            throw new IllegalArgumentException("AssignedByUser cannot be null");
+        }
+        
         this.patient = patient;
         this.vaccinationSchedule = schedule;
         this.assignedByUser = assignedByUser;
@@ -107,16 +117,29 @@ public class PatientVaccinationSchedule extends BaseOpenmrsData {
             return status;
         }
         
-        if (patient.getBirthdate() == null) {
+        if (patient == null || patient.getBirthdate() == null) {
+            return Status.SUSPENDED;
+        }
+        
+        if (vaccinationSchedule == null) {
             return Status.SUSPENDED;
         }
         
         Date now = new Date();
-        int currentAgeInDays = (int) ((now.getTime() - patient.getBirthdate().getTime()) / (24 * 60 * 60 * 1000));
+        long ageInMillis = now.getTime() - patient.getBirthdate().getTime();
+        if (ageInMillis < 0) {
+            return Status.SUSPENDED; // Future birthdate
+        }
+        
+        int currentAgeInDays = (int) (ageInMillis / (24 * 60 * 60 * 1000));
         
         List<VaccinationScheduleEntry> entries = vaccinationSchedule.getActiveEntries();
+        if (entries == null || entries.isEmpty()) {
+            return Status.COMPLETED;
+        }
+        
         boolean hasOutstandingVaccinations = entries.stream()
-                .anyMatch(entry -> entry.isValidForAge(currentAgeInDays));
+                .anyMatch(entry -> entry != null && entry.isValidForAge(currentAgeInDays));
         
         if (!hasOutstandingVaccinations) {
             return Status.COMPLETED;
@@ -126,29 +149,51 @@ public class PatientVaccinationSchedule extends BaseOpenmrsData {
     }
     
     public List<VaccinationScheduleEntry> getOverdueVaccinations() {
-        if (patient.getBirthdate() == null) {
+        if (patient == null || patient.getBirthdate() == null || vaccinationSchedule == null) {
             return java.util.Collections.emptyList();
         }
         
         Date now = new Date();
-        int currentAgeInDays = (int) ((now.getTime() - patient.getBirthdate().getTime()) / (24 * 60 * 60 * 1000));
+        long ageInMillis = now.getTime() - patient.getBirthdate().getTime();
+        if (ageInMillis < 0) {
+            return java.util.Collections.emptyList(); // Future birthdate
+        }
         
-        return vaccinationSchedule.getActiveEntries().stream()
-                .filter(entry -> entry.getAgeInDaysMax() != null && 
+        int currentAgeInDays = (int) (ageInMillis / (24 * 60 * 60 * 1000));
+        
+        List<VaccinationScheduleEntry> entries = vaccinationSchedule.getActiveEntries();
+        if (entries == null) {
+            return java.util.Collections.emptyList();
+        }
+        
+        return entries.stream()
+                .filter(entry -> entry != null && entry.getAgeInDaysMax() != null && 
                         currentAgeInDays > entry.getAgeInDaysMax())
                 .collect(java.util.stream.Collectors.toList());
     }
     
     public List<VaccinationScheduleEntry> getUpcomingVaccinations() {
-        if (patient.getBirthdate() == null) {
+        if (patient == null || patient.getBirthdate() == null || vaccinationSchedule == null) {
             return java.util.Collections.emptyList();
         }
         
         Date now = new Date();
-        int currentAgeInDays = (int) ((now.getTime() - patient.getBirthdate().getTime()) / (24 * 60 * 60 * 1000));
+        long ageInMillis = now.getTime() - patient.getBirthdate().getTime();
+        if (ageInMillis < 0) {
+            return java.util.Collections.emptyList(); // Future birthdate
+        }
         
-        return vaccinationSchedule.getActiveEntries().stream()
-                .filter(entry -> currentAgeInDays >= entry.getAgeInDaysMin() && 
+        int currentAgeInDays = (int) (ageInMillis / (24 * 60 * 60 * 1000));
+        
+        List<VaccinationScheduleEntry> entries = vaccinationSchedule.getActiveEntries();
+        if (entries == null) {
+            return java.util.Collections.emptyList();
+        }
+        
+        return entries.stream()
+                .filter(entry -> entry != null && 
+                        entry.getAgeInDaysMin() != null && 
+                        currentAgeInDays >= entry.getAgeInDaysMin() && 
                         (entry.getAgeInDaysMax() == null || currentAgeInDays <= entry.getAgeInDaysMax()))
                 .collect(java.util.stream.Collectors.toList());
     }

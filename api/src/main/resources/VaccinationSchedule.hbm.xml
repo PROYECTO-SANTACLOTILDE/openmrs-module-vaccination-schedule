@@ -29,12 +29,12 @@
         <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
         <property name="dateChanged" column="date_changed" type="timestamp"/>
         
-        <set name="entries" cascade="all-delete-orphan" inverse="true" lazy="false">
+        <set name="entries" cascade="all-delete-orphan" inverse="true" lazy="true" fetch="select">
             <key column="schedule_id"/>
             <one-to-many class="VaccinationScheduleEntry"/>
         </set>
         
-        <set name="rules" cascade="all-delete-orphan" inverse="true" lazy="false">
+        <set name="rules" cascade="all-delete-orphan" inverse="true" lazy="true" fetch="select">
             <key column="schedule_id"/>
             <one-to-many class="VaccinationScheduleRule"/>
         </set>

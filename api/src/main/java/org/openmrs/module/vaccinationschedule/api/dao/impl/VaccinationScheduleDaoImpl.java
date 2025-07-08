@@ -2,14 +2,18 @@ package org.openmrs.module.vaccinationschedule.api.dao.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Patient;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
+import org.openmrs.module.vaccinationschedule.PatientVaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
+import org.openmrs.module.vaccinationschedule.VaccinationScheduleRule;
 import org.openmrs.module.vaccinationschedule.api.dao.VaccinationScheduleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("vaccinationschedule.VaccinationScheduleDao")
@@ -28,18 +32,38 @@ public class VaccinationScheduleDaoImpl implements VaccinationScheduleDao {
     
     @Override
     public VaccinationSchedule getVaccinationSchedule(Integer scheduleId) {
-        return (VaccinationSchedule) getSession().get(VaccinationSchedule.class, scheduleId);
+        if (scheduleId == null || scheduleId <= 0) {
+            return null;
+        }
+        
+        Object result = getSession().get(VaccinationSchedule.class, scheduleId);
+        if (result instanceof VaccinationSchedule) {
+            return (VaccinationSchedule) result;
+        }
+        return null;
     }
     
     @Override
     public VaccinationSchedule getVaccinationScheduleByUuid(String uuid) {
-        return (VaccinationSchedule) getSession().createCriteria(VaccinationSchedule.class)
-                .add(Restrictions.eq("uuid", uuid))
+        if (uuid == null || uuid.trim().isEmpty()) {
+            return null;
+        }
+        
+        Object result = getSession().createCriteria(VaccinationSchedule.class)
+                .add(Restrictions.eq("uuid", uuid.trim()))
                 .uniqueResult();
+        
+        if (result instanceof VaccinationSchedule) {
+            return (VaccinationSchedule) result;
+        }
+        return null;
     }
     
     @Override
     public VaccinationSchedule saveVaccinationSchedule(VaccinationSchedule schedule) {
+        if (schedule == null) {
+            throw new IllegalArgumentException("VaccinationSchedule cannot be null");
+        }
         getSession().saveOrUpdate(schedule);
         return schedule;
     }
@@ -104,8 +128,119 @@ public class VaccinationScheduleDaoImpl implements VaccinationScheduleDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<VaccinationScheduleEntry> getEntriesBySchedule(VaccinationSchedule schedule) {
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
         return getSession().createCriteria(VaccinationScheduleEntry.class)
-                .add(Restrictions.eq("vaccinationSchedule", schedule))
+                .add(Restrictions.eq("vaccinationSchedule.scheduleId", schedule.getScheduleId()))
+                .add(Restrictions.eq("voided", false))
+                .list();
+    }
+    
+    // Schedule Rule methods
+    
+    @Override
+    public VaccinationScheduleRule getScheduleRule(Integer ruleId) {
+        if (ruleId == null) {
+            return null;
+        }
+        return (VaccinationScheduleRule) getSession().get(VaccinationScheduleRule.class, ruleId);
+    }
+    
+    @Override
+    public VaccinationScheduleRule getScheduleRuleByUuid(String uuid) {
+        if (uuid == null || uuid.trim().isEmpty()) {
+            return null;
+        }
+        return (VaccinationScheduleRule) getSession().createCriteria(VaccinationScheduleRule.class)
+                .add(Restrictions.eq("uuid", uuid))
+                .uniqueResult();
+    }
+    
+    @Override
+    public VaccinationScheduleRule saveScheduleRule(VaccinationScheduleRule rule) {
+        if (rule == null) {
+            throw new IllegalArgumentException("VaccinationScheduleRule cannot be null");
+        }
+        getSession().saveOrUpdate(rule);
+        return rule;
+    }
+    
+    @Override
+    public void deleteScheduleRule(VaccinationScheduleRule rule) {
+        if (rule != null) {
+            getSession().delete(rule);
+        }
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<VaccinationScheduleRule> getRulesBySchedule(VaccinationSchedule schedule) {
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
+        return getSession().createCriteria(VaccinationScheduleRule.class)
+                .add(Restrictions.eq("vaccinationSchedule.scheduleId", schedule.getScheduleId()))
+                .add(Restrictions.eq("voided", false))
+                .list();
+    }
+    
+    // Patient Schedule methods
+    
+    @Override
+    public PatientVaccinationSchedule getPatientSchedule(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return (PatientVaccinationSchedule) getSession().get(PatientVaccinationSchedule.class, id);
+    }
+    
+    @Override
+    public PatientVaccinationSchedule getPatientScheduleByUuid(String uuid) {
+        if (uuid == null || uuid.trim().isEmpty()) {
+            return null;
+        }
+        return (PatientVaccinationSchedule) getSession().createCriteria(PatientVaccinationSchedule.class)
+                .add(Restrictions.eq("uuid", uuid))
+                .uniqueResult();
+    }
+    
+    @Override
+    public PatientVaccinationSchedule savePatientSchedule(PatientVaccinationSchedule patientSchedule) {
+        if (patientSchedule == null) {
+            throw new IllegalArgumentException("PatientVaccinationSchedule cannot be null");
+        }
+        getSession().saveOrUpdate(patientSchedule);
+        return patientSchedule;
+    }
+    
+    @Override
+    public void deletePatientSchedule(PatientVaccinationSchedule patientSchedule) {
+        if (patientSchedule != null) {
+            getSession().delete(patientSchedule);
+        }
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<PatientVaccinationSchedule> getPatientSchedulesByPatient(Patient patient) {
+        if (patient == null) {
+            return new ArrayList<>();
+        }
+        return getSession().createCriteria(PatientVaccinationSchedule.class)
+                .add(Restrictions.eq("patient.patientId", patient.getPatientId()))
+                .add(Restrictions.eq("voided", false))
+                .list();
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<PatientVaccinationSchedule> getPatientSchedulesBySchedule(VaccinationSchedule schedule) {
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
+        return getSession().createCriteria(PatientVaccinationSchedule.class)
+                .add(Restrictions.eq("vaccinationSchedule.scheduleId", schedule.getScheduleId()))
                 .add(Restrictions.eq("voided", false))
                 .list();
     }
