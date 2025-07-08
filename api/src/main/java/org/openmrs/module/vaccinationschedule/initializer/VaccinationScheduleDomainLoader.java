@@ -9,6 +9,7 @@ import org.openmrs.module.initializer.api.CsvParser;
 import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -30,6 +31,7 @@ public class VaccinationScheduleDomainLoader extends BaseLineProcessor<Vaccinati
     protected static final String HEADER_SOURCE_AUTHORITY = "source_authority";
     
     @Autowired
+    @Qualifier("vaccinationschedule.VaccinationScheduleService")
     private VaccinationScheduleService vaccinationScheduleService;
     
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -11,6 +11,7 @@ import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +33,7 @@ public class VaccinationScheduleEntryDomainLoader extends BaseLineProcessor<Vacc
     protected static final String HEADER_SITE_CONCEPT = "site_concept";
     
     @Autowired
+    @Qualifier("vaccinationschedule.VaccinationScheduleService")
     private VaccinationScheduleService vaccinationScheduleService;
     
     @Autowired
