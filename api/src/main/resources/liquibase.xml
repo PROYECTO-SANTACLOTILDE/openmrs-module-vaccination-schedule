@@ -5,76 +5,347 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <!-- Tabla fua_estado -->
-    <changeSet id="fua_estado-2025-05-15-04" author="pedro">
+    <!-- Vaccination Schedule Table -->
+    <changeSet id="vaccination_schedule-2025-01-01-01" author="openmrs">
         <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="fua_estado"/></not>
+            <not><tableExists tableName="vaccination_schedule"/></not>
         </preConditions>
-        <createTable tableName="fua_estado">
-            <column name="fua_estado_id" type="int" autoIncrement="true">
+        <createTable tableName="vaccination_schedule">
+            <column name="schedule_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="nombre" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <!-- Tabla Fua --> 
-    <changeSet id="fua-2025-05-15-07" author="pedro">
-        <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="fua"/></not>
-        </preConditions>
-        <createTable tableName="fua">
-            <column name="fua_id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="uuid" type="char(38)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="visit_uuid" type="char(38)">
-                <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="clob"/>
-            <column name="fua_estado_id" type="int">
+            <column name="description" type="varchar(1000)"/>
+            <column name="country_code" type="varchar(3)"/>
+            <column name="version" type="int" defaultValue="1">
                 <constraints nullable="false"/>
             </column>
-            <column name="fecha_creacion" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="effective_date" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="fecha_actualizacion" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP">
+            <column name="expiry_date" type="date"/>
+            <column name="source_authority" type="varchar(255)"/>
+            <column name="retired" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
+            <column name="retire_reason" type="varchar(255)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="fua"
-                                 baseColumnNames="visit_uuid"
-                                 referencedTableName="visit"
-                                 referencedColumnNames="uuid"
-                                 constraintName="fk_fua_visit"/>
+        <addForeignKeyConstraint baseTableName="vaccination_schedule"
+                                 baseColumnNames="creator"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_vaccination_schedule_creator"/>
 
-        <addForeignKeyConstraint baseTableName="fua"
-                                 baseColumnNames="fua_estado_id"
-                                 referencedTableName="fua_estado"
-                                 referencedColumnNames="fua_estado_id"
-                                 constraintName="fk_fua_estado"/>
+        <addForeignKeyConstraint baseTableName="vaccination_schedule"
+                                 baseColumnNames="retired_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_vaccination_schedule_retired_by"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule"
+                                 baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_vaccination_schedule_changed_by"/>
+
+        <addUniqueConstraint tableName="vaccination_schedule"
+                             columnNames="country_code,version,retired"
+                             constraintName="unique_schedule_country_version"/>
     </changeSet>
 
-    <!-- Trigger para actualizar fecha_actualizacion -->
-    <changeSet id="trigger_fua_fechaActualizacion-2025-05-15-01" author="pedro" dbms="mysql">
-        <comment>Trigger para actualizar automáticamente fecha_actualizacion en cada UPDATE</comment>
-        <sql>
-            CREATE TRIGGER trg_fua_update_timestamp
-            BEFORE UPDATE ON fua
-            FOR EACH ROW
-            SET NEW.fecha_actualizacion = CURRENT_TIMESTAMP;
-        </sql>
+    <!-- Vaccination Schedule Entry Table -->
+    <changeSet id="vaccination_schedule_entry-2025-01-01-02" author="openmrs">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="vaccination_schedule_entry"/></not>
+        </preConditions>
+        <createTable tableName="vaccination_schedule_entry">
+            <column name="entry_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="schedule_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vaccine_concept_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dose_number" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age_in_days_min" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age_in_days_recommended" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age_in_days_max" type="int"/>
+            <column name="interval_from_previous_days" type="int"/>
+            <column name="is_mandatory" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sort_order" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="route_concept_id" type="int"/>
+            <column name="site_concept_id" type="int"/>
+            <column name="voided" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="schedule_id"
+                                 referencedTableName="vaccination_schedule"
+                                 referencedColumnNames="schedule_id"
+                                 constraintName="fk_entry_schedule"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="vaccine_concept_id"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"
+                                 constraintName="fk_entry_vaccine_concept"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="route_concept_id"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"
+                                 constraintName="fk_entry_route_concept"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="site_concept_id"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"
+                                 constraintName="fk_entry_site_concept"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="creator"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_entry_creator"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="voided_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_entry_voided_by"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_entry"
+                                 baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_entry_changed_by"/>
+
+        <createIndex tableName="vaccination_schedule_entry" indexName="idx_entry_schedule_sort">
+            <column name="schedule_id"/>
+            <column name="sort_order"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Vaccination Schedule Rule Table -->
+    <changeSet id="vaccination_schedule_rule-2025-01-01-03" author="openmrs">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="vaccination_schedule_rule"/></not>
+        </preConditions>
+        <createTable tableName="vaccination_schedule_rule">
+            <column name="rule_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="schedule_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rule_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vaccine_concept_id" type="int"/>
+            <column name="condition_concept_id" type="int"/>
+            <column name="rule_expression" type="varchar(1000)"/>
+            <column name="description" type="varchar(1000)"/>
+            <column name="voided" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="schedule_id"
+                                 referencedTableName="vaccination_schedule"
+                                 referencedColumnNames="schedule_id"
+                                 constraintName="fk_rule_schedule"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="vaccine_concept_id"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"
+                                 constraintName="fk_rule_vaccine_concept"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="condition_concept_id"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"
+                                 constraintName="fk_rule_condition_concept"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="creator"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_rule_creator"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="voided_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_rule_voided_by"/>
+
+        <addForeignKeyConstraint baseTableName="vaccination_schedule_rule"
+                                 baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_rule_changed_by"/>
+    </changeSet>
+
+    <!-- Patient Vaccination Schedule Table -->
+    <changeSet id="patient_vaccination_schedule-2025-01-01-04" author="openmrs">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="patient_vaccination_schedule"/></not>
+        </preConditions>
+        <createTable tableName="patient_vaccination_schedule">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="patient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="schedule_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assigned_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assigned_by_user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date_at_assignment" type="date"/>
+            <column name="status" type="varchar(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="patient_id"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="patient_id"
+                                 constraintName="fk_patient_schedule_patient"/>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="schedule_id"
+                                 referencedTableName="vaccination_schedule"
+                                 referencedColumnNames="schedule_id"
+                                 constraintName="fk_patient_schedule_schedule"/>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="assigned_by_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_patient_schedule_assigned_by"/>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="creator"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_patient_schedule_creator"/>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="voided_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_patient_schedule_voided_by"/>
+
+        <addForeignKeyConstraint baseTableName="patient_vaccination_schedule"
+                                 baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_patient_schedule_changed_by"/>
+
+        <createIndex tableName="patient_vaccination_schedule" indexName="idx_patient_active_schedule">
+            <column name="patient_id"/>
+            <column name="voided"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Sample Data: Peru National Vaccination Schedule -->
+    <changeSet id="sample_peru_schedule-2025-01-01-05" author="openmrs">
+        <comment>Insert sample Peru national vaccination schedule</comment>
+        <insert tableName="vaccination_schedule">
+            <column name="uuid" value="550e8400-e29b-41d4-a716-446655440000"/>
+            <column name="name" value="Peru National Vaccination Schedule 2025"/>
+            <column name="description" value="Official vaccination schedule for Peru as per Ministry of Health guidelines"/>
+            <column name="country_code" value="PER"/>
+            <column name="version" value="1"/>
+            <column name="effective_date" value="2025-01-01"/>
+            <column name="source_authority" value="Ministry of Health Peru"/>
+            <column name="retired" value="false"/>
+            <column name="creator" value="1"/>
+            <column name="date_created" value="2025-01-01 00:00:00"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
