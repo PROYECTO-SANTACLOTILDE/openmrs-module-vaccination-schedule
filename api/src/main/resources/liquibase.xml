@@ -332,7 +332,7 @@
     </changeSet>
 
     <!-- Sample Data: Peru National Vaccination Schedule -->
-    <changeSet id="sample_peru_schedule-2024-07-07-05" author="openmrs">
+    <changeSet id="sample_peru_schedule-2024-07-07-06" author="openmrs">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">SELECT COUNT(*) FROM users WHERE user_id = 1</sqlCheck>
         </preConditions>
@@ -345,7 +345,7 @@
             <column name="version" value="1"/>
             <column name="effective_date" value="2024-01-01"/>
             <column name="source_authority" value="Ministry of Health Peru"/>
-            <column name="retired" value="false"/>
+            <column name="retired" value="0"/>
             <column name="creator" value="1"/>
             <column name="date_created" value="2024-07-07 00:00:00"/>
         </insert>
