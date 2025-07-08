@@ -1,4 +1,4 @@
-# OpenMRS Vaccination Schedule Module
+# PeruHCE Vaccination Schedule Module
 
 A comprehensive OpenMRS module for managing vaccination schedules and tracking patient vaccination status.
 

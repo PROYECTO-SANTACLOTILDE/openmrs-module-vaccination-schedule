@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <module configVersion="1.2">
-	
+
 	<!-- Base Module Properties -->
 	<id>${project.parent.artifactId}</id>
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>org.openmrs.module.vaccinationschedule</package>
-	<author>OpenMRS Community</author>
+	<author>PeruHCE</author>
 	<description>
 		${project.parent.description}
 	</description>
 
 	<activator>org.openmrs.module.vaccinationschedule.VaccinationScheduleActivator</activator>
-	
+
 	<!-- /Base Module Properties -->
-	
+
 	<require_version>2.6.0</require_version>
-	
+
 	<!-- Module Dependencies -->
 	<require_modules>
 		<require_module version="2.5.0">
@@ -27,7 +27,7 @@
 			org.openmrs.module.webservices.rest
 		</require_module>
 	</require_modules>
-	
+
 	<!-- Required Privileges -->
 	<privilege>
 		<name>View Vaccination Schedules</name>
@@ -48,7 +48,7 @@
 		<name>Administer Vaccines</name>
 		<description>Allows user to record vaccine administration and mark contraindications</description>
 	</privilege>
-	
+
 	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>vaccinationschedule.defaultCountryCode</property>
@@ -63,7 +63,8 @@
 		<property>vaccinationschedule.autoAssignSchedule</property>
 		<defaultValue>true</defaultValue>
 		<description>
-			Whether to automatically assign vaccination schedules to new patients based on country code.
+			Whether to automatically assign vaccination schedules to new patients based on country
+			code.
 			Valid values: true, false
 		</description>
 	</globalProperty>
@@ -72,7 +73,8 @@
 		<property>vaccinationschedule.overdueThresholdDays</property>
 		<defaultValue>30</defaultValue>
 		<description>
-			Number of days after the maximum age that a vaccination is considered critically overdue.
+			Number of days after the maximum age that a vaccination is considered critically
+			overdue.
 			Used for alerts and reporting.
 		</description>
 	</globalProperty>
@@ -85,7 +87,7 @@
 			Used for upcoming vaccination notifications.
 		</description>
 	</globalProperty>
-	
+
 	<!-- Internationalization -->
 	<messages>
 		<lang>en</lang>
@@ -100,5 +102,5 @@
 		<file>messages_fr.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
+
 </module>
