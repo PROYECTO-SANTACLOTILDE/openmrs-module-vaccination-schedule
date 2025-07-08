@@ -6,7 +6,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- Vaccination Schedule Table -->
-    <changeSet id="vaccination_schedule-2025-01-01-01" author="openmrs">
+    <changeSet id="vaccination_schedule-2024-07-07-01" author="openmrs">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="vaccination_schedule"/></not>
         </preConditions>
@@ -70,7 +70,7 @@
     </changeSet>
 
     <!-- Vaccination Schedule Entry Table -->
-    <changeSet id="vaccination_schedule_entry-2025-01-01-02" author="openmrs">
+    <changeSet id="vaccination_schedule_entry-2024-07-07-02" author="openmrs">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="vaccination_schedule_entry"/></not>
         </preConditions>
@@ -171,7 +171,7 @@
     </changeSet>
 
     <!-- Vaccination Schedule Rule Table -->
-    <changeSet id="vaccination_schedule_rule-2025-01-01-03" author="openmrs">
+    <changeSet id="vaccination_schedule_rule-2024-07-07-03" author="openmrs">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="vaccination_schedule_rule"/></not>
         </preConditions>
@@ -246,7 +246,7 @@
     </changeSet>
 
     <!-- Patient Vaccination Schedule Table -->
-    <changeSet id="patient_vaccination_schedule-2025-01-01-04" author="openmrs">
+    <changeSet id="patient_vaccination_schedule-2024-07-07-04" author="openmrs">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="patient_vaccination_schedule"/></not>
         </preConditions>
@@ -332,19 +332,22 @@
     </changeSet>
 
     <!-- Sample Data: Peru National Vaccination Schedule -->
-    <changeSet id="sample_peru_schedule-2025-01-01-05" author="openmrs">
+    <changeSet id="sample_peru_schedule-2024-07-07-05" author="openmrs">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">SELECT COUNT(*) FROM users WHERE user_id = 1</sqlCheck>
+        </preConditions>
         <comment>Insert sample Peru national vaccination schedule</comment>
         <insert tableName="vaccination_schedule">
             <column name="uuid" value="550e8400-e29b-41d4-a716-446655440000"/>
-            <column name="name" value="Peru National Vaccination Schedule 2025"/>
+            <column name="name" value="Peru National Vaccination Schedule 2024"/>
             <column name="description" value="Official vaccination schedule for Peru as per Ministry of Health guidelines"/>
             <column name="country_code" value="PER"/>
             <column name="version" value="1"/>
-            <column name="effective_date" value="2025-01-01"/>
+            <column name="effective_date" value="2024-01-01"/>
             <column name="source_authority" value="Ministry of Health Peru"/>
             <column name="retired" value="false"/>
             <column name="creator" value="1"/>
-            <column name="date_created" value="2025-01-01 00:00:00"/>
+            <column name="date_created" value="2024-07-07 00:00:00"/>
         </insert>
     </changeSet>
 
