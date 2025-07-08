@@ -18,6 +18,10 @@ public class VaccinationScheduleDaoImpl implements VaccinationScheduleDao {
     @Autowired
     private DbSessionFactory sessionFactory;
     
+    public void setSessionFactory(DbSessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+    
     private DbSession getSession() {
         return sessionFactory.getCurrentSession();
     }

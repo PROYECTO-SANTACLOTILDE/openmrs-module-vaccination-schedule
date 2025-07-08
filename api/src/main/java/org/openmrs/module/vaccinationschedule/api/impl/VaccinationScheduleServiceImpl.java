@@ -24,6 +24,10 @@ public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implement
     @Autowired
     private VaccinationScheduleDao vaccinationScheduleDao;
     
+    public void setVaccinationScheduleDao(VaccinationScheduleDao vaccinationScheduleDao) {
+        this.vaccinationScheduleDao = vaccinationScheduleDao;
+    }
+    
     @Override
     public VaccinationSchedule saveVaccinationSchedule(VaccinationSchedule schedule) {
         if (schedule == null) {
