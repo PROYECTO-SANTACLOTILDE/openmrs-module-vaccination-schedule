@@ -15,7 +15,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>PeruHCE Vaccination Schedule Module</name>
-    <description>OpenMRS module for managing vaccination schedules and patient vaccination tracking</description>
+    <description>PeruHCE module for managing vaccination schedules and patient vaccination tracking</description>
 
     <url>https://wiki.openmrs.org/display/docs/OpenMRS+Vaccination+Schedule+Module</url>
 
