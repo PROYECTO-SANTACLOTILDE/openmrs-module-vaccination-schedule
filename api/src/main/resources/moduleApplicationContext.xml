@@ -64,16 +64,6 @@
         </property>
     </bean>
     
-    <!-- Hibernate Mappings -->
-    <bean id="vaccinationScheduleHibernateMappingPackage" class="org.openmrs.util.HibernateMappingPackage">
-        <property name="packageName" value="org.openmrs.module.vaccinationschedule"/>
-        <property name="mappingFiles">
-            <set>
-                <value>VaccinationSchedule.hbm.xml</value>
-                <value>VaccinationScheduleEntry.hbm.xml</value>
-            </set>
-        </property>
-    </bean>
 
     <!-- Domain Loaders for Initializer Module -->
     <bean id="vaccinationschedule.VaccinationScheduleDomainLoader" 
