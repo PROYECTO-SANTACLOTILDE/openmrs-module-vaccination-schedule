@@ -13,7 +13,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.openmrs.module.webservices.rest.web.RequestContext;
-import org.springframework.stereotype.Controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,8 +74,7 @@ class TestData {
     }
 }
 
-@Controller
-@Resource(name = RestConstants.VERSION_1 + "/vaccinationschedule/test", supportedClass = TestData.class, supportedOpenmrsVersions = {"2.6.*"})
+@Resource(name = RestConstants.VERSION_1 + "/vaccinationtest", supportedClass = TestData.class, supportedOpenmrsVersions = {"2.6.*"})
 public class TestRestController extends DelegatingCrudResource<TestData> {
 
     @Override
