@@ -18,7 +18,7 @@ jobs:
           cache: maven
           server-id: github
           server-username: module-bot
-          server-password: test
+          server-password: MAVEN_TOKEN
 
       - name: Deploy to GitHub Packages
         run: mvn clean deploy -B -DskipTests
