@@ -16,9 +16,11 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 @Resource(name = RestConstants.VERSION_1
         + "/vaccinationschedule/schedule", supportedClass = VaccinationSchedule.class, supportedOpenmrsVersions = {
                 "2.6.*" })
