@@ -24,13 +24,23 @@ public class VaccinationScheduleRestController extends DelegatingCrudResource<Va
 
     @Override
     public VaccinationSchedule getByUniqueId(String uniqueId) {
+        if (uniqueId == null || uniqueId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Schedule UUID is required");
+        }
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
-        return service.getVaccinationScheduleByUuid(uniqueId);
+        VaccinationSchedule schedule = service.getVaccinationScheduleByUuid(uniqueId.trim());
+        if (schedule == null) {
+            throw new IllegalArgumentException("Schedule not found");
+        }
+        return schedule;
     }
 
     @Override
     protected void delete(VaccinationSchedule delegate, String reason, RequestContext context)
             throws ResponseException {
+        if (delegate == null) {
+            throw new IllegalArgumentException("Vaccination schedule is required");
+        }
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         service.retireVaccinationSchedule(delegate, reason);
     }
@@ -42,6 +52,9 @@ public class VaccinationScheduleRestController extends DelegatingCrudResource<Va
 
     @Override
     public VaccinationSchedule save(VaccinationSchedule delegate) {
+        if (delegate == null) {
+            throw new IllegalArgumentException("Vaccination schedule data is required");
+        }
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         return service.saveVaccinationSchedule(delegate);
     }

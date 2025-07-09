@@ -88,14 +88,14 @@ public class PatientVaccinationStatusRestController extends DelegatingCrudResour
     @Override
     protected PageableResult doGetAll(RequestContext context) throws ResponseException {
         String patientUuid = context.getRequest().getParameter("patient");
-        if (patientUuid == null) {
+        if (patientUuid == null || patientUuid.trim().isEmpty()) {
             throw new IllegalArgumentException("Patient UUID is required");
         }
 
         PatientService patientService = Context.getPatientService();
-        Patient patient = patientService.getPatientByUuid(patientUuid);
+        Patient patient = patientService.getPatientByUuid(patientUuid.trim());
         if (patient == null) {
-            throw new IllegalArgumentException("Patient not found: " + patientUuid);
+            throw new IllegalArgumentException("Patient not found");
         }
 
         String type = context.getRequest().getParameter("type");
@@ -104,15 +104,29 @@ public class PatientVaccinationStatusRestController extends DelegatingCrudResour
         VaccinationScheduleService service = Context.getService(VaccinationScheduleService.class);
         List<PatientVaccinationStatus> statuses;
 
-        if ("due".equals(type)) {
-            statuses = service.getDueVaccinations(patient, new Date());
-        } else if ("overdue".equals(type)) {
-            statuses = service.getOverdueVaccinations(patient, new Date());
-        } else if ("upcoming".equals(type)) {
-            int days = daysParam != null ? Integer.parseInt(daysParam) : 30;
-            statuses = service.getUpcomingVaccinations(patient, days);
-        } else {
-            statuses = service.calculateVaccinationStatuses(patient);
+        try {
+            if ("due".equals(type)) {
+                statuses = service.getDueVaccinations(patient, new Date());
+            } else if ("overdue".equals(type)) {
+                statuses = service.getOverdueVaccinations(patient, new Date());
+            } else if ("upcoming".equals(type)) {
+                int days = 30; // default
+                if (daysParam != null && !daysParam.trim().isEmpty()) {
+                    try {
+                        days = Integer.parseInt(daysParam.trim());
+                        if (days < 1 || days > 365) {
+                            throw new IllegalArgumentException("Days parameter must be between 1 and 365");
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Invalid days parameter: must be a number");
+                    }
+                }
+                statuses = service.getUpcomingVaccinations(patient, days);
+            } else {
+                statuses = service.calculateVaccinationStatuses(patient);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving vaccination status: " + e.getMessage(), e);
         }
 
         return new NeedsPaging<PatientVaccinationStatus>(statuses, context);
