@@ -19,11 +19,6 @@ jobs:
           server-id: github
           server-username: module-bot
           server-password: MAVEN_TOKEN
-      - name: Debug MAVEN_TOKEN
-        run: |
-          echo "MAVEN_TOKEN is: $MAVEN_TOKEN 2"
-        env:
-          MAVEN_TOKEN: ${{ secrets.MODULE_TOKEN }}
 
       - name: Deploy to GitHub Packages
         run: mvn clean deploy -B -DskipTests
