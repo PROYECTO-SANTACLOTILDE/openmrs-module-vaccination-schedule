@@ -12,7 +12,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>vaccination-schedule</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
     <name>PeruHCE Vaccination Schedule Module</name>
     <description>PeruHCE module for managing vaccination schedules and patient vaccination tracking</description>
@@ -97,6 +97,22 @@
     </distributionManagement>
 
     <repositories>
+        <repository>
+            <id>openmrs-repo</id>
+            <name>OpenMRS Nexus Repository</name>
+            <url>https://mavenrepo.openmrs.org/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central Repository</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/PROYECTO-SANTACLOTILDE/openmrs-module-vaccination-schedule</url>
