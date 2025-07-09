@@ -17,10 +17,10 @@ jobs:
           java-version: 8
           cache: maven
           server-id: github
-          server-username: module-bot
-          server-password: MAVEN_TOKEN
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
 
       - name: Deploy to GitHub Packages
         run: mvn clean deploy -B -DskipTests
         env:
-          MAVEN_TOKEN: ${{ secrets.MODULE_TOKEN }}
+          MAVEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
