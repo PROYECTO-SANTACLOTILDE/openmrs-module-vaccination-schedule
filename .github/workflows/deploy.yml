@@ -21,7 +21,7 @@ jobs:
           server-password: MAVEN_TOKEN
       - name: Debug MAVEN_TOKEN
         run: |
-          echo "MAVEN_TOKEN is: $MAVEN_TOKEN"
+          echo "MAVEN_TOKEN is: $MAVEN_TOKEN 2"
         env:
           MAVEN_TOKEN: ${{ secrets.MODULE_TOKEN }}
 
