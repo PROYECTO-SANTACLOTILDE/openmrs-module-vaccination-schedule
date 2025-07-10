@@ -7,7 +7,11 @@ import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.vaccinationschedule.*;
+import org.openmrs.module.vaccinationschedule.model.VaccinationSchedule;
+import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleEntry;
+import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleRule;
+import org.openmrs.module.vaccinationschedule.model.PatientVaccinationSchedule;
+import org.openmrs.module.vaccinationschedule.model.PatientVaccinationStatus;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.openmrs.module.vaccinationschedule.api.dao.VaccinationScheduleDao;
 

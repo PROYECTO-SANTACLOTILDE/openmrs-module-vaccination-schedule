@@ -1,10 +1,10 @@
 package org.openmrs.module.vaccinationschedule.api.dao;
 
 import org.openmrs.Patient;
-import org.openmrs.module.vaccinationschedule.PatientVaccinationSchedule;
-import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
-import org.openmrs.module.vaccinationschedule.VaccinationScheduleEntry;
-import org.openmrs.module.vaccinationschedule.VaccinationScheduleRule;
+import org.openmrs.module.vaccinationschedule.model.PatientVaccinationSchedule;
+import org.openmrs.module.vaccinationschedule.model.VaccinationSchedule;
+import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleEntry;
+import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleRule;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

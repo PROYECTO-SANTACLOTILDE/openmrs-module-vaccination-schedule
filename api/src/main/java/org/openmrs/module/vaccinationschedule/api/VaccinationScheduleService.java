@@ -6,7 +6,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.vaccinationschedule.*;
+import org.openmrs.module.vaccinationschedule.model.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;

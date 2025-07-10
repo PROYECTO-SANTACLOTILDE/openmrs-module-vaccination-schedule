@@ -1,4 +1,4 @@
-package org.openmrs.module.vaccinationschedule;
+package org.openmrs.module.vaccinationschedule.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.User;
