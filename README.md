@@ -36,19 +36,11 @@ The Vaccination Schedule Module provides healthcare facilities with the ability 
 - `GET /ws/rest/v1/vaccinationstatus?patient={uuid}&type=overdue` - Get overdue vaccinations
 - `GET /ws/rest/v1/vaccinationstatus?patient={uuid}&type=upcoming&days=30` - Get upcoming vaccinations
 
-### Data Import Support
-
-The module supports CSV-based data import through the Initializer module:
-
-- **Vaccination Schedules**: `configuration/vaccinationschedules/schedule.csv`
-- **Schedule Entries**: `configuration/vaccinationscheduleentries/entries.csv`
-
 ## Installation
 
 ### Prerequisites
 
 - OpenMRS Platform 2.6.0 or higher
-- Initializer Module 2.5.0 or higher
 - Web Services REST Module 2.24.0 or higher
 
 ### Installation Steps
@@ -495,33 +487,6 @@ This project uses Spotless for code formatting. Spotless runs automatically duri
 
 - `mvn spotless:apply` - Format your code
 - `mvn spotless:check` - Check formatting without making changes
-
-## Development
-
-### Module Structure
-
-```
-api/                          # Core business logic
-├── src/main/java/
-│   └── org/openmrs/module/vaccinationschedule/
-│       ├── VaccinationSchedule.java
-│       ├── VaccinationScheduleEntry.java
-│       ├── PatientVaccinationStatus.java
-│       ├── api/VaccinationScheduleService.java
-│       ├── exception/
-│       └── initializer/
-├── src/main/resources/
-│   └── liquibase.xml         # Database schema
-└── src/test/java/            # Unit tests
-
-omod/                         # Web module
-├── src/main/java/
-│   └── org/openmrs/module/vaccinationschedule/
-│       └── web/rest/         # REST controllers
-├── src/main/resources/
-│   └── config.xml            # Module configuration
-└── src/main/webapp/          # Web resources
-```
 
 ### Key Classes
 

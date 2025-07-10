@@ -1,75 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Beans to add to the current Application context definition -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-  		    http://www.springframework.org/schema/context
-  		    http://www.springframework.org/schema/context/spring-context-3.0.xsd
-  		    http://www.springframework.org/schema/jee
-  		    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-  		    http://www.springframework.org/schema/tx
-  		    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-  		    http://www.springframework.org/schema/aop
-  		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-  		    http://www.springframework.org/schema/util
-  		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-    <!-- Enable annotation-based configuration -->
+    <!-- Enable component scanning for Spring annotations -->
     <context:component-scan base-package="org.openmrs.module.vaccinationschedule" />
-    <context:annotation-config />
 
-    <!-- Vaccination Schedule Service -->
-    <bean id="vaccinationschedule.VaccinationScheduleService"
-            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="transactionManager" />
-        </property>
-        <property name="target">
-            <bean class="org.openmrs.module.vaccinationschedule.api.impl.VaccinationScheduleServiceImpl">
-                <property name="vaccinationScheduleDao" ref="vaccinationschedule.VaccinationScheduleDao" />
-            </bean>
-        </property>
-        <property name="preInterceptors">
-            <ref bean="serviceInterceptors" />
-        </property>
-        <property name="transactionAttributeSource">
-            <ref bean="transactionAttributeSource" />
-        </property>
-    </bean>
+    <!-- Enable annotation-driven transaction management -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
     <!-- Add VaccinationScheduleService to OpenMRS context -->
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
                 <value>org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService</value>
-                <ref bean="vaccinationschedule.VaccinationScheduleService" />
+                <ref bean="vaccinationschedule.VaccinationScheduleServiceImpl" />
             </list>
         </property>
     </bean>
-
-    <!-- Vaccination Schedule DAO -->
-    <bean id="vaccinationschedule.VaccinationScheduleDao" 
-          class="org.openmrs.module.vaccinationschedule.api.dao.impl.VaccinationScheduleDaoImpl">
-        <property name="sessionFactory">
-            <ref bean="dbSessionFactory" />
-        </property>
-    </bean>
-    
-
-    <!-- Domain Loaders for Initializer Module -->
-    <bean id="vaccinationschedule.VaccinationScheduleDomainLoader" 
-          class="org.openmrs.module.vaccinationschedule.initializer.VaccinationScheduleDomainLoader" />
-    
-    <bean id="vaccinationschedule.VaccinationScheduleEntryDomainLoader" 
-          class="org.openmrs.module.vaccinationschedule.initializer.VaccinationScheduleEntryDomainLoader" />
 
 </beans>
