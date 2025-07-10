@@ -18,6 +18,7 @@ public class DoseSequenceException extends VaccinationScheduleException {
 	
 	public DoseSequenceException(String vaccineName, int requestedDose, int lastCompletedDose) {
 		super(String.format("Cannot administer dose %d of %s. Patient has only completed dose %d. "
-		        + "Doses must be administered in sequence.", requestedDose, vaccineName, lastCompletedDose));
+		        + "Doses must be administered in sequence.",
+		    requestedDose, vaccineName, lastCompletedDose));
 	}
 }

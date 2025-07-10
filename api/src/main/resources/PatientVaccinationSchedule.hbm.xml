@@ -3,7 +3,7 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.openmrs.module.vaccinationschedule">
+<hibernate-mapping package="org.openmrs.module.vaccinationschedule.model">
 
     <class name="PatientVaccinationSchedule" table="patient_vaccination_schedule">
         <id name="id" column="id">
@@ -21,7 +21,7 @@
         
         <property name="status" column="status" not-null="true">
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.openmrs.module.vaccinationschedule.PatientVaccinationSchedule$Status</param>
+                <param name="enumClass">org.openmrs.module.vaccinationschedule.model.PatientVaccinationSchedule$Status</param>
                 <param name="useNamed">true</param>
             </type>
         </property>

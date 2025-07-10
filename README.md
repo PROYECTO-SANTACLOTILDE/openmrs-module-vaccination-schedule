@@ -537,9 +537,6 @@ omod/                         # Web module
 - **Community**: [OpenMRS Talk](https://talk.openmrs.org)
 - **Issues**: [GitHub Issues](https://github.com/openmrs/openmrs-module-vaccination-schedule/issues)
 
-## License
-
-This module is licensed under the Mozilla Public License 2.0.
 
 ## Contributing
 

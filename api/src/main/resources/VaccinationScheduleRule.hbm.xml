@@ -3,7 +3,7 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.openmrs.module.vaccinationschedule">
+<hibernate-mapping package="org.openmrs.module.vaccinationschedule.model">
 
     <class name="VaccinationScheduleRule" table="vaccination_schedule_rule">
         <id name="ruleId" column="rule_id">
@@ -16,7 +16,7 @@
         
         <property name="ruleType" column="rule_type" not-null="true">
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.openmrs.module.vaccinationschedule.VaccinationScheduleRule$RuleType</param>
+                <param name="enumClass">org.openmrs.module.vaccinationschedule.model.VaccinationScheduleRule$RuleType</param>
                 <param name="useNamed">true</param>
             </type>
         </property>
