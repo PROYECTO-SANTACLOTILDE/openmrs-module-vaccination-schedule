@@ -18,6 +18,14 @@
 
 	<require_version>2.6.0</require_version>
 
+	<!-- Hibernate Mapping Files -->
+	<mappingFiles>
+		VaccinationSchedule.hbm.xml
+		VaccinationScheduleEntry.hbm.xml
+		VaccinationScheduleRule.hbm.xml
+		PatientVaccinationSchedule.hbm.xml
+	</mappingFiles>
+
 	<!-- Module Dependencies -->
 	<require_modules>
 		<require_module version="2.5.0">

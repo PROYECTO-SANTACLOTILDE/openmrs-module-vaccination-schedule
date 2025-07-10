@@ -5,6 +5,7 @@ import org.openmrs.module.vaccinationschedule.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
@@ -153,6 +154,7 @@ public class VaccinationScheduleRestController extends DelegatingCrudResource<Va
         return RestConstants.VERSION_1;
     }
 
+    @PropertyGetter("display")
     public String getDisplayString(VaccinationSchedule schedule) {
         if (schedule.getName() == null) {
             return "";
