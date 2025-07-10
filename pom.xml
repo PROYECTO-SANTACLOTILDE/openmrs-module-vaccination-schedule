@@ -36,8 +36,9 @@
         <openMRSWebVersion>2.6.0</openMRSWebVersion>
         <initializerVersion>2.5.0</initializerVersion>
         <webservicesRestVersion>2.24.0</webservicesRestVersion>
-        <junitJupiterVersion>5.7.0</junitJupiterVersion>
-        <mockitoVersion>3.5.11</mockitoVersion>
+        <junitJupiterVersion>5.8.2</junitJupiterVersion>
+        <mockitoVersion>3.12.4</mockitoVersion>
+        <junitVersion>4.13.2</junitVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -84,6 +85,12 @@
                 <artifactId>webservices.rest-omod-common</artifactId>
                 <version>${webservicesRestVersion}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junitVersion}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -60,6 +60,16 @@
             <version>${mockitoVersion}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+	    <dependency>
+		    <groupId>org.openmrs.api</groupId>
+		    <artifactId>openmrs-api</artifactId>
+		    <scope>compile</scope>
+	    </dependency>
     </dependencies>
 
     <build>

@@ -10,7 +10,6 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.vaccinationschedule.*;
 import org.openmrs.module.vaccinationschedule.api.VaccinationScheduleService;
 import org.openmrs.module.vaccinationschedule.api.dao.VaccinationScheduleDao;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
