@@ -402,7 +402,7 @@ If the REST endpoints work in OpenMRS SDK but not in production/test environment
 ### Deployment Checklist
 
 ✅ WebServices REST module installed and started
-✅ Upload vaccination-schedule-1.0.6.omod file  
+✅ Upload vaccination-schedule-1.0.7.omod file  
 ✅ Start the module in Admin → Manage Modules
 ✅ Restart OpenMRS completely
 ✅ Check logs for any errors during startup

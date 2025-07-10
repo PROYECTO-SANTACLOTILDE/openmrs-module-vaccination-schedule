@@ -5,7 +5,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>vaccination-schedule</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <packaging>pom</packaging>
     <name>PeruHCE Vaccination Schedule Module</name>
     <description>PeruHCE module for managing vaccination schedules and patient vaccination tracking</description>
@@ -329,8 +329,8 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <lombokVersion>1.18.20</lombokVersion>
         <powerMockitoVersion>2.0.9</powerMockitoVersion>
-        <webservicesRestVersion>2.32.0</webservicesRestVersion>
-        <openmrsPlatformVersion>2.3.4</openmrsPlatformVersion>
+        <webservicesRestVersion>2.49.0</webservicesRestVersion>
+        <openmrsPlatformVersion>2.7.4</openmrsPlatformVersion>
         <openmrsPlatformToolsVersion>2.4.0</openmrsPlatformToolsVersion>
         <junitJupiterVersion>5.8.2</junitJupiterVersion>
         <mockitoVersion>3.10.0</mockitoVersion>
