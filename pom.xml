@@ -12,7 +12,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>vaccination-schedule</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>pom</packaging>
     <name>PeruHCE Vaccination Schedule Module</name>
     <description>PeruHCE module for managing vaccination schedules and patient vaccination tracking</description>
@@ -34,8 +34,8 @@
         <openmrsPlatformVersion>2.6.0</openmrsPlatformVersion>
         <openMRSVersion>2.6.0</openMRSVersion>
         <openMRSWebVersion>2.6.0</openMRSWebVersion>
-        <initializerVersion>2.5.0</initializerVersion>
-        <webservicesRestVersion>2.24.0</webservicesRestVersion>
+        <initializerVersion>2.8.0</initializerVersion>
+        <webservicesRestVersion>2.47.0</webservicesRestVersion>
         <junitJupiterVersion>5.8.2</junitJupiterVersion>
         <mockitoVersion>3.12.4</mockitoVersion>
         <junitVersion>4.13.2</junitVersion>

@@ -22,7 +22,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import java.util.Date;
 import java.util.List;
 
-@Resource(name = RestConstants.VERSION_1 + "/vaccinationstatus", supportedClass = PatientVaccinationStatus.class, supportedOpenmrsVersions = {"2.6.*"})
+@Resource(name = RestConstants.VERSION_1 + "/vaccinationstatus", supportedClass = PatientVaccinationStatus.class, supportedOpenmrsVersions = {"2.6.*", "2.7.*"})
 public class PatientVaccinationStatusRestController extends DelegatingCrudResource<PatientVaccinationStatus> {
 
     @Override

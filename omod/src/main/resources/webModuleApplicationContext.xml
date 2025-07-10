@@ -21,4 +21,11 @@
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<context:component-scan base-package="org.openmrs.module.vaccinationschedule.web" />
+	
+	<!-- Explicitly register REST controllers -->
+	<bean id="vaccinationScheduleRestController" 
+	      class="org.openmrs.module.vaccinationschedule.web.rest.VaccinationScheduleRestController" />
+	      
+	<bean id="patientVaccinationStatusRestController" 
+	      class="org.openmrs.module.vaccinationschedule.web.rest.PatientVaccinationStatusRestController" />
 </beans>
