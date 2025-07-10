@@ -12,7 +12,7 @@
 		${project.parent.description}
 	</description>
 
-	<activator>org.openmrs.module.vaccinationschedule.VaccinationScheduleActivator</activator>
+	<activator>org.openmrs.module.vaccinationschedule.web.activator.VaccinationScheduleActivator</activator>
 
 	<!-- /Base Module Properties -->
 
