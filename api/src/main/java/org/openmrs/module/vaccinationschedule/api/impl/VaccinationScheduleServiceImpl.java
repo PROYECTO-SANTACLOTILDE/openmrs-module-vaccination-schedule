@@ -19,15 +19,11 @@ import org.openmrs.module.vaccinationschedule.model.PatientVaccinationStatus;
 import org.openmrs.module.vaccinationschedule.model.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleEntry;
 import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleRule;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("vaccinationschedule.VaccinationScheduleServiceImpl")
 @Transactional
 public class VaccinationScheduleServiceImpl extends BaseOpenmrsService implements VaccinationScheduleService {
 	
-	@Autowired
 	private VaccinationScheduleDao vaccinationScheduleDao;
 	
 	public void setVaccinationScheduleDao(VaccinationScheduleDao vaccinationScheduleDao) {

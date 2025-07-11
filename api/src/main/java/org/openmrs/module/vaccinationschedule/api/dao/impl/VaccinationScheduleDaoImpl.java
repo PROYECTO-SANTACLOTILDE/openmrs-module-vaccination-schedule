@@ -13,13 +13,9 @@ import org.openmrs.module.vaccinationschedule.model.PatientVaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.model.VaccinationSchedule;
 import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleEntry;
 import org.openmrs.module.vaccinationschedule.model.VaccinationScheduleRule;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-@Repository("vaccinationschedule.VaccinationScheduleDao")
 public class VaccinationScheduleDaoImpl implements VaccinationScheduleDao {
 	
-	@Autowired
 	private DbSessionFactory sessionFactory;
 	
 	public void setSessionFactory(DbSessionFactory sessionFactory) {
