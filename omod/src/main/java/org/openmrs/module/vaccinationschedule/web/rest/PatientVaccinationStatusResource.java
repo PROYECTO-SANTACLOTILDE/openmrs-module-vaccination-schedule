@@ -25,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 @Resource(name = RestConstants.VERSION_1
         + "/vaccinationstatus", supportedClass = PatientVaccinationStatus.class, supportedOpenmrsVersions = { "2.6.*",
                 "2.7.*" })
-public class PatientVaccinationStatusRestController extends DelegatingCrudResource<PatientVaccinationStatus> {
+public class PatientVaccinationStatusResource extends DelegatingCrudResource<PatientVaccinationStatus> {
 	
 	@Override
 	public PatientVaccinationStatus getByUniqueId(String uniqueId) {

@@ -31,7 +31,7 @@
 	<!-- Define the DAO implementation bean -->
 	<bean id="vaccinationschedule.VaccinationScheduleDao" 
 		  class="org.openmrs.module.vaccinationschedule.api.dao.impl.VaccinationScheduleDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="sessionFactory" ref="dbSessionFactory"/>
 	</bean>
 
 	<!-- Service proxy for transactions -->
